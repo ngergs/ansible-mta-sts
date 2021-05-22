@@ -1,0 +1,43 @@
+- name: Install nginx (apt)
+  apt:
+    name: 
+    - nginx
+    state: present
+- name: Install certbot (snap)
+  community.general.snap:
+    name: certbot
+    classic: yes
+    state: present
+- name: Allow Nginx Full rule (ufw)
+  community.general.ufw:
+    rule: allow
+    name: Nginx Full
+- name: Template nginx-https-config to /etc/nginx/sites-available/mta-sts.{{domain}}
+  ansible.builtin.template:
+    src: nginx_https.conf
+    dest: /etc/nginx/sites-available/mta-sts.{{domain}}
+    owner: root
+    group: root
+    mode: '0644'
+  when: https|bool
+  notify:
+  - Reload nginx
+- name: Template nginx-http-config to /etc/nginx/sites-available/mta-sts.{{domain}}
+  ansible.builtin.template:
+    src: nginx_http.conf
+    dest: /etc/nginx/sites-available/mta-sts.{{domain}}
+    owner: root
+    group: root
+    mode: '0644'
+  when: not https|bool
+  notify:
+  - Reload nginx
+- name: Symbolic link from /etc/nginx/sites-available/mta-sts.{{domain}} to /etc/nginx/sites-enabled/mta-sts.{{domain}}
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/mta-sts.{{domain}}
+    dest: /etc/nginx/sites-enabled/mta-sts.{{domain}}
+    owner: root
+    group: root
+    state: link
+  notify:
+  - Reload nginx
