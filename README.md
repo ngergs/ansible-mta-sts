@@ -1,7 +1,7 @@
 MTA-STS
 =========
 
-Instance that hosts a .well-known/mta-sts.txt file for mta-sta unter the mta-sts subdomain.
+Instance that hosts a .well-known/mta-sts.txt file for [MTA-STS](https://datatracker.ietf.org/doc/html/rfc8461) unter the mta-sts subdomain.
 
 
 Requirements
