@@ -10,7 +10,7 @@ Requirements
 An ubuntu host and a domain for which the relevant DNS entries can be setup.
 The mta-sts subdomain should also point to this server. The easiest setup for most use cases would be a CNAME DNS entry:
 ```
-mta-sts 10800 IN CNAME {{domain}}.
+mta-sts 10800 IN CNAME @
 ```
 
 Role Variables
